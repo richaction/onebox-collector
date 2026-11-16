@@ -1,0 +1,35 @@
+services:
+  collector:
+    build:
+      context: ..
+    env_file:
+      - ../.env
+    environment:
+      LISTEN: ":8080"
+      INTERNAL_LISTEN: ":8081"
+      VAULT_ROOT: /vault
+      DATA_DIR: /state
+    volumes:
+      - vault:/vault
+      - state:/state
+    restart: unless-stopped
+  caddy:
+    image: caddy:2-alpine
+    environment:
+      PUBLIC_DOMAIN: "${PUBLIC_DOMAIN:?set PUBLIC_DOMAIN in .env}"
+      CALLBACK_PATH: "${CALLBACK_PATH:-/webhook/kf}"
+    depends_on:
+      - collector
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+volumes:
+  vault:
+  state:
+  caddy_data:
+  caddy_config:

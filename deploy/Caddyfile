@@ -1,0 +1,9 @@
+{$PUBLIC_DOMAIN} {
+	@callback path {$CALLBACK_PATH:/webhook/kf}
+	handle @callback {
+		reverse_proxy collector:8080
+	}
+	handle {
+		respond 404
+	}
+}
