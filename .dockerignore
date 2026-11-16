@@ -7,4 +7,6 @@ deploy
 spec
 collect
 data
+vault
+state
 collector

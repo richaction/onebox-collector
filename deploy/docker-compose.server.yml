@@ -1,0 +1,25 @@
+name: onebox-collector
+services:
+  collector:
+    container_name: onebox-collector
+    build:
+      context: ..
+    env_file:
+      - ../.env
+    environment:
+      LISTEN: ":8080"
+      INTERNAL_LISTEN: ":8081"
+      VAULT_ROOT: /vault
+      DATA_DIR: /state
+    ports:
+      - "127.0.0.1:18080:8080"
+      - "127.0.0.1:18081:8081"
+    volumes:
+      - /opt/onebox-collector/vault:/vault
+      - /opt/onebox-collector/state:/state
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8081/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
