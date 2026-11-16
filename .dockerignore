@@ -1,0 +1,10 @@
+.git
+.env*
+.obsidian
+README.md
+docs
+deploy
+spec
+collect
+data
+collector

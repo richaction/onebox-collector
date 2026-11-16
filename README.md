@@ -1,2 +1,24 @@
 # onebox-collector
-Self-hosted service that turns forwarded WeChat content — text, images, Douyin videos, WeChat articles — into one daily Markdown note, with media in a sibling `assets` folder, synced to your Nutstore vault over WebDAV.
+
+把微信客服收到的文字、图片、抖音分享和公众号文章存入每日 Markdown。媒体保存在同级 `assets/`，可选同步到坚果云 WebDAV。
+
+## 运行
+
+需要 Go 1.25 或更新版本。本地启动前，将 [配置样例](.env.example) 中的企微变量注入环境。
+
+```sh
+go test ./...
+go run ./cmd/collector
+```
+
+默认在 `:8080` 接收 `/webhook/kf` 回调，在 `127.0.0.1:8081` 提供 `/healthz`、`/metrics` 和可选的重放入口。默认笔记写入 `./collect/<日期>/<日期>.md`，SQLite 和每日备份写入 `./data/`。
+
+公网部署、凭证清单及真实环境验收见 [部署与联调清单](docs/部署与联调清单.md)。目录和文件语义见 [Vault 契约](spec/SPEC.md)。
+
+## 处理行为
+
+- 回调校验后先把通知写入 SQLite，后台按客服帐号分页拉取。在消息和游标一起提交后才继续拉取下一页。
+- 同一通道和消息 ID 的重复投递只追加一次。微信侧再次主动发送同一内容会产生新消息 ID，保留为新条目；同日相同媒体仍共用资源文件。
+- 抖音可用时归档视频。解析失败时保留原链和原因；已取得元信息但下载暂时失败时，延迟 1、5、30 分钟重试，最终保留元信息和链接。
+- 公众号默认保留卡片元信息、原链和可下载的封面。设置 `OFFICIAL_FETCH=true` 后可抓取正文。
+- WebDAV 独立重试。可识别的冲突副本条目按时间合入主文件；遇到无法自动归属的编辑时保留副本并记录告警。

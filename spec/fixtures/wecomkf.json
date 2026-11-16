@@ -1,0 +1,58 @@
+[
+  {
+    "name": "文本跨 UTC 日期",
+    "raw": {"msgid":"text-1","external_userid":"visitor","origin":3,"send_time":"2026-11-16T00:01:00+08:00","msgtype":"text","text":{"content":"  第一行\r\n第二行  "}},
+    "type": "text",
+    "date": "2026-11-16",
+    "file": "2026-11-16.md",
+    "contains": ["## 00:01", "第一行\n第二行"]
+  },
+  {
+    "name": "图片",
+    "raw": {"msgid":"image-1","external_userid":"visitor","origin":3,"send_time":1794791700,"msgtype":"image","image":{"media_id":"image-media"}},
+    "type": "image",
+    "date": "2026-11-16",
+    "file": "2026-11-16.md",
+    "contains": ["## 09:15", "![图片](assets/2026-11-16-", "图片标识：image\\-media"]
+  },
+  {
+    "name": "抖音分享文案降级",
+    "raw": {"msgid":"douyin-1","external_userid":"visitor","origin":3,"send_time":1794792000,"msgtype":"text","text":{"content":"复制打开抖音 https://v.douyin.com/sample/，一起看"}},
+    "type": "douyin",
+    "date": "2026-11-16",
+    "file": "2026-11-16.md",
+    "contains": ["## 09:20", "https://v.douyin.com/sample/", "抖音解析失败：短链失效"]
+  },
+  {
+    "name": "公众号链接卡片",
+    "raw": {"msgid":"official-1","external_userid":"visitor","origin":3,"send_time":1794792300,"msgtype":"link","link":{"title":"Go 并发","desc":"文章摘要","url":"http://mp.weixin.qq.com/s/article?utm_source=wx#rd","thumb_media_id":"image-media"}},
+    "type": "official",
+    "date": "2026-11-16",
+    "file": "2026-11-16.md",
+    "contains": ["## 09:25", "Go 并发", "文章摘要", "https://mp.weixin.qq.com/s/article", "![封面](assets/2026-11-16-"]
+  },
+  {
+    "name": "公众号 mpnews 兼容字段",
+    "raw": {"msgid":"official-2","openid":"visitor","send_time":1794792301,"msgtype":"mpnews","mpnews":{"title":"文章标题","digest":"摘要字段","url":"https://mp.weixin.qq.com/s/next"}},
+    "type": "official",
+    "date": "2026-11-16",
+    "file": "2026-11-16.md",
+    "contains": ["文章标题", "摘要字段", "https://mp.weixin.qq.com/s/next"]
+  },
+  {
+    "name": "普通链接",
+    "raw": {"msgid":"link-1","external_userid":"visitor","origin":3,"send_time":1794792520,"msgtype":"text","text":{"content":"https://example.com/abc?utm_source=wx"}},
+    "type": "link",
+    "date": "2026-11-16",
+    "file": "2026-11-16.md",
+    "contains": ["[原始链接](<https://example.com/abc>)"]
+  },
+  {
+    "name": "语音兜底",
+    "raw": {"msgid":"voice-1","external_userid":"visitor","origin":3,"send_time":1794792600,"msgtype":"voice","voice":{"media_id":"voice-id"}},
+    "type": "unknown",
+    "date": "2026-11-16",
+    "file": "2026-11-16.md",
+    "contains": ["未识别消息类型：voice", "报文摘要"]
+  }
+]
